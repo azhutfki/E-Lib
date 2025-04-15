@@ -1,18 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Electronic Library</title>
+
+  <!-- CSS styles including light/dark themes -->
   <style>
+    /* Root styles for easy theme switching */
+    :root {
+      --bg-color: #f4f4f4;
+      --text-color: #2c3e50;
+      --card-bg: white;
+      --header-bg: #2c3e50;
+      --nav-bg: #34495e;
+      --nav-hover-bg: #1abc9c;
+      --btn-color: #1abc9c;
+      --btn-hover: #16a085;
+    }
+
+    /* Dark mode overrides */
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --card-bg: #1e1e1e;
+      --header-bg: #1f1f1f;
+      --nav-bg: #2a2a2a;
+      --nav-hover-bg: #16a085;
+      --btn-color: #16a085;
+      --btn-hover: #1abc9c;
+    }
+
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: #f4f4f4;
+      background: var(--bg-color);
+      color: var(--text-color);
     }
 
     header {
-      background: #2c3e50;
+      background: var(--header-bg);
       color: white;
       padding: 1rem 2rem;
       text-align: center;
@@ -21,7 +49,7 @@
     nav {
       display: flex;
       justify-content: center;
-      background: #34495e;
+      background: var(--nav-bg);
       flex-wrap: wrap;
     }
 
@@ -29,11 +57,11 @@
       color: white;
       padding: 1rem;
       text-decoration: none;
-      display: inline-block;
+      transition: background 0.3s ease;
     }
 
     nav a:hover {
-      background: #1abc9c;
+      background: var(--nav-hover-bg);
     }
 
     section {
@@ -41,25 +69,31 @@
     }
 
     h2 {
-      color: #2c3e50;
+      text-align: center;
       margin-bottom: 1rem;
     }
 
-    .book-vertical {
-      display: flex;
-      flex-direction: column;
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
-      align-items: center;
+      justify-items: center;
     }
 
     .book {
-      background: white;
+      background: var(--card-bg);
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: 300px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-width: 300px;
       text-align: center;
       padding: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .book:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
 
     .book img {
@@ -78,14 +112,74 @@
     .book a:hover {
       text-decoration: underline;
     }
+
+    /* Scroll-to-top button styles */
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--btn-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      cursor: pointer;
+      display: none;
+      z-index: 100;
+    }
+
+    #scrollTopBtn:hover {
+      background-color: var(--btn-hover);
+    }
+
+    /* Theme toggle and search layout */
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--card-bg);
+    }
+
+    .toggle-theme {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      background: var(--btn-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .toggle-theme:hover {
+      background: var(--btn-hover);
+    }
+
+    #searchBar {
+      padding: 0.5rem 1rem;
+      width: 300px;
+      max-width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
   </style>
 </head>
+
 <body>
 
+  <!-- Header Section -->
   <header>
     <h1>Electronic Library</h1>
   </header>
 
+  <!-- Controls: Theme Toggle and Search -->
+  <div class="top-controls">
+    <button class="toggle-theme" onclick="toggleTheme()">Toggle Light/Dark Mode</button>
+    <input type="text" id="searchBar" placeholder="Search for a book..." onkeyup="searchBooks()" />
+  </div>
+
+  <!-- Navigation Links -->
   <nav>
     <a href="#home">Home</a>
     <a href="#finance">Finance</a>
@@ -93,9 +187,11 @@
     <a href="#cybersecurity">Cyber Security</a>
   </nav>
 
+  <!-- Sections (Books grouped by category) -->
+  <!-- Add your book sections below -->
   <section id="home">
     <h2>Home</h2>
-    <div class="book-vertical">
+    <div class="book-grid">
       <div class="book">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuki7UDJEkIZ2tU8XVUBtBS6X_gVgCjAsrvTeUMgnFdlVgBklG-3sHBHN4V4C9O7r_MUQ&usqp=CAU" alt="Book 1">
         <a href="https://drive.google.com/file/d/1CTS-hPmqjhGJFI3O03GWdlbStJxWv2dw/view?usp=drive_link" target="_blank">500 Social Media Marketing</a>
@@ -107,9 +203,10 @@
     </div>
   </section>
 
+  <!-- Finance Section -->
   <section id="finance">
     <h2>Finance</h2>
-    <div class="book-vertical">
+    <div class="book-grid">
       <div class="book">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvYEm4Oqlpe-OSn_SmdSR8ttNJyXgGXTPkeQ&s" alt="Finance Book 1">
         <a href="https://drive.google.com/file/d/1DWNI-U2MvE5qC6MjmIjU3sRVTGkKAon5/view?usp=drive_link" target="_blank">Expert Secrets by Russell</a>
@@ -121,23 +218,25 @@
     </div>
   </section>
 
+  <!-- Education Section -->
   <section id="education">
     <h2>Education</h2>
-    <div class="book-vertical">
+    <div class="book-grid">
       <div class="book">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1b4xh6yZyCpE9LsRP0lEiQPspJ7VVyf9eGg&s" alt="Education Book 1">
-        <a href="https://drive.google.com/file/d/1h9pyE_YcAaaUDNfuZGJ0ezc2NKDFuLwF/view?usp=drive_link" target="_blank">Propaganda by (Edward L. Bernays)</a>
+        <a href="https://drive.google.com/file/d/1h9pyE_YcAaaUDNfuZGJ0ezc2NKDFuLwF/view?usp=drive_link" target="_blank">Propaganda by Edward Bernays</a>
       </div>
       <div class="book">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsaqyXHMBOGAP4Qg5vkyfXAGHP7UFkyufrQ&s" alt="Education Book 2">
-        <a href="https://drive.google.com/file/d/1D6lt6vIUKs5OrtfIUflE1V5d38rUKlII/view?usp=drive_link" target="_blank">Too Big to Fail The Inside</a>
+        <a href="https://drive.google.com/file/d/1D6lt6vIUKs5OrtfIUflE1V5d38rUKlII/view?usp=drive_link" target="_blank">Too Big to Fail</a>
       </div>
     </div>
   </section>
 
+  <!-- Cyber Security Section -->
   <section id="cybersecurity">
     <h2>Cyber Security</h2>
-    <div class="book-vertical">
+    <div class="book-grid">
       <div class="book">
         <img src="https://m.media-amazon.com/images/I/61IxJuRI39L._SL1000_.jpg" alt="Cyber Book 1">
         <a href="https://drive.google.com/file/d/1D2vuCB79CIlPKCTjmnb1JVsniI5bSmLL/view?usp=drive_link" target="_blank">Think and Grow Rich</a>
@@ -149,5 +248,40 @@
     </div>
   </section>
 
+  <!-- Scroll-to-top button -->
+  <button id="scrollTopBtn" title="Go to top">↑</button>
+
+  <!-- JavaScript for interactivity -->
+  <script>
+    const scrollBtn = document.getElementById("scrollTopBtn");
+
+    // Show scroll button when user scrolls down
+    window.onscroll = function () {
+      scrollBtn.style.display = window.pageYOffset > 300 ? "block" : "none";
+    };
+
+    // Scroll to top when button clicked
+    scrollBtn.onclick = function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    // Theme toggle function
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // Live book search function
+    function searchBooks() {
+      const query = document.getElementById("searchBar").value.toLowerCase();
+      const books = document.querySelectorAll(".book");
+
+      books.forEach(book => {
+        const title = book.textContent.toLowerCase();
+        book.style.display = title.includes(query) ? "block" : "none";
+      });
+    }
+  </script>
+
 </body>
+
 </html>
